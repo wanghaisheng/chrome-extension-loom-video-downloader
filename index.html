@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Downloader</h1>
+    <form id="downloadForm">
+        <input type="text" id="videoUrl" placeholder="Enter Loom video URL" required>
+        <button type="submit">Download Video</button>
+    </form>
+    <div id="result" class="result"></div>
+
+    <script>
+        document.getElementById('downloadForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const url = document.getElementById('videoUrl').value;
+            const resultDiv = document.getElementById('result');
+
+            try {
+                const response = await fetch('/download-video', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    resultDiv.innerHTML = `<p>Download successful! <a href="${data.downloadUrl}" download>Click here to download</a></p>`;
+                } else {
+                    resultDiv.innerHTML = `<p>Error: ${data.message}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p>There was an error: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
