@@ -5,7 +5,7 @@ const app = express();
 const port = 8080;
 
 // Serve static files from the current directory
-app.use(express.static(path.join(__dirname)));
+app.use('/downloaded-videos', express.static(path.join(__dirname, 'downloaded-videos')));
 
 // Handle JSON requests
 app.use(express.json());
