@@ -49,7 +49,13 @@ const main = async (videoUrl) => {
   if (urlResponse.success) {
     const filename = `${id}.mp4`;
     const response = downloadLoomVideo(urlResponse.data, filename);
-    return response;
+    if (downloadResponse.success) {
+      return { success: true, downloadUrl: `/downloaded-videos/${filename}` };
+    }
+    return downloadResponse;
+
+  
+  
   }
 
   return urlResponse;
